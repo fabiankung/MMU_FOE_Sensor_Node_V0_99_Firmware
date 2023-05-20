@@ -1,9 +1,11 @@
 // 1. Sample program to illustrate interfacing NRF24L01+ radio module with
-// Arduino and sensors. The sensors are
+// Arduino and sensors. 
+// 2. This version supports multiple sensor nodes to 1 receivers
+// 3. The connected sensors are
 //  a) An analog output sensor connected to pin A2 of Arduino.
 //  b) A humidity/temperature sensor, DHT11/22, connected to pin 4 of Arduino.  
-// 2. Transmitting text string to the receiver.
-// 3. DC motor driver to pin 5 of Arduino.
+// 4. Transmitting text string to the receiver.
+// 5. DC motor driver to pin 5 of Arduino.
 //
 // Author        : Fabian Kung
 // Last modified : 18 May 2023

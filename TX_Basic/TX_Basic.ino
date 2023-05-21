@@ -6,6 +6,7 @@
 //  b) A humidity/temperature sensor, DHT11/22, connected to pin 4 of Arduino.  
 // 4. Transmitting text string to the receiver.
 // 5. DC motor driver to pin 5 of Arduino.
+// 6. Add a new sensor.
 //
 // Author        : Fabian Kung
 // Last modified : 18 May 2023

@@ -179,6 +179,7 @@ void loop()
   
   unsigned int unSensor_mV;
   unsigned int unInputVoltage_mV;
+  unsigned int unSensorSoilMois_mV;
   
   sensors_event_t event;
     
@@ -189,8 +190,9 @@ void loop()
   Serial.println("Sending Radio Packet");
   digitalWrite(PDEBUG_LED,HIGH);     // Turn on debug LED.
 
-  // --- Read and convert analog sensor output ---
-  unInputVoltage_mV = analogRead(0);  // Read input voltage VBAT.
+  // --- Read and convert analog sensor inputs to BCD ---
+  unInputVoltage_mV = analogRead(0);      // Read input voltage VBAT.
+  unSensorSoilMois_mV = analogRead(1);    // Read soil moisture sensor output.  
   unInputVoltage_mV = (unInputVoltage_mV*49)/10;
   unInputVoltage_mV = 2*unInputVoltage_mV; // The input voltage is divide-by-2 via
                                            // a 10k resistive voltage divider.
@@ -243,7 +245,7 @@ void loop()
  
   // --- Transmit data packet over nRF24L01+ radio ---
   strTX[0] = _SENSOR_ID;          // Sensor ID
-  strTX[1] = "T";                 // Sensor type.
+  strTX[1] = 'h';                 // Sensor type, humidity.
   //strTX[1] = obj4BCDSensor.bytThousand + 0x30;   // Convert each digit to ASCII.
   //strTX[2] = obj4BCDSensor.bytHundred + 0x30;
   //strTX[3] = obj4BCDSensor.bytTen + 0x30;

@@ -177,8 +177,8 @@ void loop()
   OBJ_4BCD obj4BCDSensor;
   OBJ_4BCD obj4BCDTemp;
   
-  unsigned int unSensor;
   unsigned int unSensor_mV;
+  unsigned int unInputVoltage_mV;
   
   sensors_event_t event;
     
@@ -190,12 +190,20 @@ void loop()
   digitalWrite(PDEBUG_LED,HIGH);     // Turn on debug LED.
 
   // --- Read and convert analog sensor output ---
-  unSensor = analogRead(2);    // Read value of analog sensor.
+  unInputVoltage_mV = analogRead(0);  // Read input voltage VBAT.
+  unInputVoltage_mV = (unInputVoltage_mV*49)/10;
+  unInputVoltage_mV = 2*unInputVoltage_mV; // The input voltage is divide-by-2 via
+                                           // a 10k resistive voltage divider.
+  Serial.println("Input voltage: ");
+  Serial.print(unInputVoltage_mV);
+  Serial.println(" mV");
+  
+  unSensor_mV = analogRead(2); // Read value of analog sensor.
                                // NOTE: The built-in ADC in Arduino Uno, Nano and
                                // Micro and Pro-micro are 10 bits. With reference
                                // voltage at 5V, each unit interval is 
                                // 5/1023 = 4.888mV.                           
-  unSensor_mV = (unSensor*49)/10;     // We use this trick so that the conversion
+  unSensor_mV = (unSensor_mV*49)/10;  // We use this trick so that the conversion
                                       // works entirely in integer, and within the
                                       // 16-bits limit of the integer datatype used
                                       // by Arduino.   

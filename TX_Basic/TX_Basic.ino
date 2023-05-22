@@ -1,15 +1,19 @@
 // 1. Sample program to illustrate interfacing NRF24L01+ radio module with
 // Arduino and sensors. 
-// 2. This version supports multiple sensor nodes to 1 receivers
+// 2. This version supports multiple sensor nodes to 1 receivers.
 // 3. The connected sensors are
-//  a) An analog output sensor connected to pin A2 of Arduino.
-//  b) A humidity/temperature sensor, DHT11/22, connected to pin 4 of Arduino.  
+//  a) A soil moisture sensor to pin A1 of Arduino.
+//  b) An analog output sensor of choice connected to pin A2 of Arduino.
+//  c) A humidity/temperature sensor, DHT11/22, connected to pin 4 of Arduino.
+//  d) An internal 2:1 voltage divider with input connected to VBAT 
+//     (positive terminal of BAT1) and output to pin A0 of Arduino. This is
+//     mainly used to measure the connected battery voltage level if we are
+//     using LiPo rechargable battery to power the sensor node.    
 // 4. Transmitting text string to the receiver.
 // 5. DC motor driver to pin 5 of Arduino.
-// 6. Add a new sensor.
 //
 // Author        : Fabian Kung
-// Last modified : 18 May 2023
+// Last modified : 22 May 2023
 // Arduino Board : Pro-micro
 // 
 // Resources:
@@ -53,8 +57,8 @@ char  strTX[16];          // TX string buffer
 
 // --- Objects and variables for DHT11, DHT22 sensor ---
 // Uncomment the type of sensor in use:
-#define DHTTYPE    DHT11     // DHT 11
-//#define DHTTYPE    DHT22     // DHT 22 (AM2302)
+//#define DHTTYPE    DHT11     // DHT 11
+#define DHTTYPE    DHT22     // DHT 22 (AM2302)
 //#define DHTTYPE    DHT21     // DHT 21 (AM2301)
 DHT_Unified dht(DHTPIN, DHTTYPE);
 uint32_t delayMS;

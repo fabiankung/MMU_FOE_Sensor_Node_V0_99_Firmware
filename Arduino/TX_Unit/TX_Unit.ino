@@ -1,6 +1,10 @@
 // 1. Sample program to illustrate interfacing NRF24L01+ radio module with
 // Arduino and sensors. 
-// 2. This version supports multiple sensor nodes to 1 receivers.
+// 2. This version supports multiple sensor nodes to 1 receiver.
+//    Up to 6 sensor nodes can communicate with 1 receiver using the same
+//    frequency channel. Each sensor node is assigned a distint datapipe,
+//    value from 0 to 5. We can imagine the datapipe as time-division 
+//    multiple access.
 // 3. The connected sensors are
 //  a) A soil moisture sensor to pin A1 of Arduino.
 //  b) An analog output sensor of choice connected to pin A2 of Arduino.

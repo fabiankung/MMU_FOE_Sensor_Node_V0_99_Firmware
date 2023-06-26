@@ -1,6 +1,10 @@
-// Sample program for interfacing nRF24L01+ radio module with Arduino,
-// receiving text string from multiple transmitters using different datapipes.
-// on same RF channel.
+// 1. Sample program for interfacing nRF24L01+ radio module with Arduino,
+//    receiving text string from multiple transmitters using different datapipes.
+//    on same RF channel.
+// 2. Up to 6 sensor nodes can communicate with 1 receiver using the same
+//    frequency channel. Each sensor node is assigned a distint datapipe,
+//    value from 0 to 5. We can imagine the datapipe as time-division 
+//    multiple access.
 // Note that serial port of 115200 bps is used to improve throughput.
 //
 // Author         : Fabian Kung
@@ -11,8 +15,8 @@
 // https://lastminuteengineers.com/nrf24l01-arduino-wireless-communication/
 //
 // Usage:
-// 1. Make sure the address[6]=....   matches both transmit and receive 
-//    Sensor Nodes.
+// 1. Make sure the address[6]=.... content matches both transmit and receive 
+//    Sensor Nodes. This array contains the datapipe addresses.
 // 2. Arduino needs to be connected to computer via USB port.
 // 3. Call up Arduino IDE, then invoke the Serial Monitor.
 // 4. Set baud rate to 115200 bps, Both NL & CR for line ending.

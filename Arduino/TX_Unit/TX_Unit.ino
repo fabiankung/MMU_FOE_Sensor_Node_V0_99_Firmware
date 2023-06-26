@@ -1,5 +1,5 @@
 // 1. Sample program to illustrate interfacing NRF24L01+ radio module with
-// Arduino and sensors. 
+// Arduino and sensors. Also sleep mode in the micro-controller is activated,
 // 2. This version supports multiple sensor nodes to 1 receiver.
 //    Up to 6 sensor nodes can communicate with 1 receiver using the same
 //    frequency channel. Each sensor node is assigned a distint datapipe,
@@ -17,7 +17,7 @@
 // 5. DC motor driver to pin 5 of Arduino.
 //
 // Author        : Fabian Kung
-// Last modified : 22 May 2023
+// Last modified : 26 June 2023
 // Arduino Board : Pro-micro
 // 
 // Resources:
@@ -28,6 +28,8 @@
 // https://learn.adafruit.com/dht/overview
 
 //Include Libraries
+#include <avr/wdt.h>
+#include <avr/sleep.h>
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
@@ -161,6 +163,13 @@ void setup()
   // Set delay between sensor readings based on sensor details.
   delayMS = sensor.min_delay / 1000;
   */
+  sleep_enable();                       // Enable sleep mode.
+  set_sleep_mode(SLEEP_MODE_PWR_DOWN);  // Set sleep mode option.
+                                        // Power down the CPU completely 
+                                        // during sleep, with only the
+                                        // 128 kHz internal RC oscillator running
+                                        // in Atmega micro-controller.
+  wdt_enable(WDTO_8S);                  // Enable WDT with roughly 8s timeout.  
 }
 
 // Sample application.
@@ -262,7 +271,12 @@ void loop()
   radio.write(&strTX, 6); // Transmit data string to receiver, 6 bytes.
   radio.powerDown(); // Powerdown nRF24L01+ radio to save power.
   digitalWrite(PDEBUG_LED,LOW);   // Turn off debug LED.
-  delay(1500);
+  //delay(1500);
+
+  delay(500);                      // Delay is needed in order for PC to recognize the USB
+                                   // device during programming. 
+  wdt_reset();                     // Reset WDT counter before going to sleep.
+  //sleep_cpu();                  // Start sleep mode. Power down AVR micro-controller.
 }
 
 // Function to convert an unsigned integer value to

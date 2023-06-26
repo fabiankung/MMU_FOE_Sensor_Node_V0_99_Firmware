@@ -273,10 +273,10 @@ void loop()
   digitalWrite(PDEBUG_LED,LOW);   // Turn off debug LED.
   //delay(1500);
 
-  delay(500);                      // Delay is needed in order for PC to recognize the USB
+  delay(600);                      // Delay is needed in order for PC to recognize the USB
                                    // device during programming. 
   wdt_reset();                     // Reset WDT counter before going to sleep.
-  //sleep_cpu();                  // Start sleep mode. Power down AVR micro-controller.
+  sleep_cpu();                  // Start sleep mode. Power down AVR micro-controller.
 }
 
 // Function to convert an unsigned integer value to

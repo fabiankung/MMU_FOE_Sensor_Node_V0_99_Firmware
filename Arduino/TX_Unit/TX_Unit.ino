@@ -1,6 +1,15 @@
 // 1. Sample program to illustrate interfacing NRF24L01+ radio module with
-// Arduino and sensors. Also sleep mode in the micro-controller is activated.
-// Branch_wSleep_Binary
+// Arduino and sensors. Also sleep mode and watch-dog timer (WDT) 
+// in the micro-controller is activated.
+// The microcontroller will wake up when WDT expires. It will then powerup
+// the radio module, sample all sensors outputs, format the sensor output 
+// and send the selected data via radio module to the remote receiver. After
+// this the microcontroller reset the WDT and goes back to sleep.
+//
+// To disable the sleep function, comment out all occurance of the statement
+// sleep_cpu(); 
+// in the code.
+//
 // 2. This version supports multiple sensor nodes to 1 receiver.
 //    Up to 6 sensor nodes can communicate with 1 receiver using the same
 //    frequency channel. Each sensor node is assigned a distint datapipe,

@@ -63,6 +63,7 @@ uint64_t address[6] = {0x7878787878LL,
                        0xB3B4B5B60FLL,
                        0xB3B4B5B605LL
                       };
+
 char  strTX[16];          // TX string buffer  
 
 // --- Objects and variables for DHT11, DHT22 sensor ---
@@ -109,7 +110,7 @@ void setup()
                                    // If we use 2000 kbps baud rate, the channel interval 
                                    // should be 2 MHz to prevent interference.                                 
   
-  // Set the address of the pipe. 
+  
   // According to the datasheet, the auto-retry features's delay value should
   // be "skewed" to allow the RX node to receive 1 transmission at a time.
   // So, use varying delay between retry attempts and 15 (at most) retry attempts.
@@ -185,6 +186,7 @@ void setup()
                                         // 128 kHz internal RC oscillator running
                                         // in Atmega micro-controller.
   wdt_enable(WDTO_8S);                  // Enable WDT with roughly 8s timeout.  
+
 }
 
 // Sample application.
@@ -201,7 +203,8 @@ void setup()
 
 void loop()
 {
-  //Send message to receiver.
+
+  // Send a message to the receiver.
   
   unsigned int unSensor_mV;
   unsigned int unInputVoltage_mV;
@@ -272,15 +275,15 @@ void loop()
   // --- Transmit data packet over nRF24L01+ radio ---
   strTX[0] = _SENSOR_ID;          // Sensor ID
   strTX[1] = 'h';                 // Sensor type, humidity.
-  //strTX[1] = obj4BCDSensor.bytThousand + 0x30;   // Convert each digit to ASCII.
-  //strTX[2] = obj4BCDSensor.bytHundred + 0x30;
-  //strTX[3] = obj4BCDSensor.bytTen + 0x30;
-  //strTX[4] = obj4BCDSensor.bytDigit + 0x30;
+  strTX[1] = obj4BCDSensor.bytThousand + 0x30;   // Convert each digit to ASCII.
+  strTX[2] = obj4BCDSensor.bytHundred + 0x30;
+  strTX[3] = obj4BCDSensor.bytTen + 0x30;
+  strTX[4] = obj4BCDSensor.bytDigit + 0x30;
   
-  strTX[2] = obj4BCDTemp.bytThousand + 0x30;   // Convert each digit to ASCII.
-  strTX[3] = obj4BCDTemp.bytHundred + 0x30;
-  strTX[4] = obj4BCDTemp.bytTen + 0x30;
-  strTX[5] = obj4BCDTemp.bytDigit + 0x30;  
+  //strTX[2] = obj4BCDTemp.bytThousand + 0x30;   // Convert each digit to ASCII.
+  //strTX[3] = obj4BCDTemp.bytHundred + 0x30;
+  //strTX[4] = obj4BCDTemp.bytTen + 0x30;
+  //strTX[5] = obj4BCDTemp.bytDigit + 0x30;  
   radio.write(&strTX, 6); // Transmit data string to receiver, 6 bytes.
   radio.powerDown(); // Powerdown nRF24L01+ radio to save power.
   digitalWrite(PDEBUG_LED,LOW);   // Turn off debug LED.

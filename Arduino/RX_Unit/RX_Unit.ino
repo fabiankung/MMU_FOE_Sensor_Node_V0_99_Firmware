@@ -62,7 +62,7 @@ void setup() {
   pinMode(PBAT_STAT, INPUT);    // Battery charger status monitoring pin.
   
   while (!Serial);              // Initialized on-board UART port.
-    Serial.begin(115200);
+    Serial.begin(9600);
     
   Serial.println("Input 's' to start");
   while(1)                          // Infinite loop, wait for start character.    

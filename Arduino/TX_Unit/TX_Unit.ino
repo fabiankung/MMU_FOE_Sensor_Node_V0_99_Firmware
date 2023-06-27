@@ -17,7 +17,7 @@
 // 5. DC motor driver to pin 5 of Arduino.
 //
 // Author        : Fabian Kung
-// Last modified : 22 May 2023
+// Last modified : 27 June 2023
 // Arduino Board : Pro-micro
 // 
 // Resources:
@@ -42,6 +42,13 @@
 #define PBAT_STAT   7
 #define PBAT_LEVEL  0    // AN0 - Connected to a 1:2 resistive voltage divider.
 
+// Set Sensor Node ID and Address
+//#define _SENSOR_ID       'A'
+//#define _SENSOR_ID       'B'
+#define _SENSOR_ID       'C'
+// Set the address of the datapipe. 
+#define   _DATAPIPE_NUMBER  1     // Valid value: 0 to 5
+
 // --- Objects and variables for nRF24L01+ radio module ---
 // Create an RF24 object
 RF24 radio(9, 8);  // CE, CSN
@@ -54,9 +61,7 @@ uint64_t address[6] = {0x7878787878LL,
                        0xB3B4B5B60FLL,
                        0xB3B4B5B605LL
                       };
-//#define _SENSOR_ID       'A'
-//#define _SENSOR_ID       'B'
-#define _SENSOR_ID       'C'
+
 char  strTX[16];          // TX string buffer  
 
 // --- Objects and variables for DHT11, DHT22 sensor ---
@@ -74,6 +79,9 @@ typedef struct Struct4BCD
   byte  bytHundred;
   byte  bytThousand;
 } OBJ_4BCD;
+
+OBJ_4BCD obj4BCDSensor;
+OBJ_4BCD obj4BCDTemp;
 
 void setup()
 {
@@ -100,11 +108,10 @@ void setup()
                                    // If we use 2000 kbps baud rate, the channel interval 
                                    // should be 2 MHz to prevent interference.                                 
   
-  // Set the address of the pipe. 
+  
   // According to the datasheet, the auto-retry features's delay value should
   // be "skewed" to allow the RX node to receive 1 transmission at a time.
   // So, use varying delay between retry attempts and 15 (at most) retry attempts.
-  #define   _DATAPIPE_NUMBER  1     // Valid value: 0 to 5
 
   #if  _DATAPIPE_NUMBER == 0
     radio.openWritingPipe(address[0]);
@@ -161,6 +168,14 @@ void setup()
   // Set delay between sensor readings based on sensor details.
   delayMS = sensor.min_delay / 1000;
   */
+  obj4BCDSensor.bytThousand = 0;
+  obj4BCDSensor.bytHundred = 0;
+  obj4BCDSensor.bytTen = 0;
+  obj4BCDSensor.bytDigit = 0;
+  obj4BCDSensor.bytTemp = 0;
+  obj4BCDSensor.bytTemp = 0;
+  obj4BCDSensor.bytTemp = 0;
+  obj4BCDSensor.bytTemp = 0;  
 }
 
 // Sample application.
@@ -178,8 +193,7 @@ void setup()
 void loop()
 {
   //Send message to receiver
-  OBJ_4BCD obj4BCDSensor;
-  OBJ_4BCD obj4BCDTemp;
+
   
   unsigned int unSensor_mV;
   unsigned int unInputVoltage_mV;

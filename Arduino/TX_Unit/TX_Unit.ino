@@ -250,15 +250,15 @@ void loop()
   // --- Transmit data packet over nRF24L01+ radio ---
   strTX[0] = _SENSOR_ID;          // Sensor ID
   strTX[1] = 'h';                 // Sensor type, humidity.
-  //strTX[1] = obj4BCDSensor.bytThousand + 0x30;   // Convert each digit to ASCII.
-  //strTX[2] = obj4BCDSensor.bytHundred + 0x30;
-  //strTX[3] = obj4BCDSensor.bytTen + 0x30;
-  //strTX[4] = obj4BCDSensor.bytDigit + 0x30;
+  strTX[1] = obj4BCDSensor.bytThousand + 0x30;   // Convert each digit to ASCII.
+  strTX[2] = obj4BCDSensor.bytHundred + 0x30;
+  strTX[3] = obj4BCDSensor.bytTen + 0x30;
+  strTX[4] = obj4BCDSensor.bytDigit + 0x30;
   
-  strTX[2] = obj4BCDTemp.bytThousand + 0x30;   // Convert each digit to ASCII.
-  strTX[3] = obj4BCDTemp.bytHundred + 0x30;
-  strTX[4] = obj4BCDTemp.bytTen + 0x30;
-  strTX[5] = obj4BCDTemp.bytDigit + 0x30;  
+  //strTX[2] = obj4BCDTemp.bytThousand + 0x30;   // Convert each digit to ASCII.
+  //strTX[3] = obj4BCDTemp.bytHundred + 0x30;
+  //strTX[4] = obj4BCDTemp.bytTen + 0x30;
+  //strTX[5] = obj4BCDTemp.bytDigit + 0x30;  
   radio.write(&strTX, 6); // Transmit data string to receiver, 6 bytes.
   radio.powerDown(); // Powerdown nRF24L01+ radio to save power.
   digitalWrite(PDEBUG_LED,LOW);   // Turn off debug LED.
